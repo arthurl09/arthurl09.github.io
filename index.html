@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>刘致远的主页</title>
-	</head>
-	<body>
-		<p>
-			<h1>先来一段滑稽吧：</h1>
-			<h2>
-				<p>
-					<script>
-  						var xhr = new XMLHttpRequest();
-  						xhr.open('get', 'https://api.7ed.net/soup/api');
-  						xhr.onreadystatechange = function () {
-    							if (xhr.readyState === 4) {
-      								var data = JSON.parse(xhr.responseText);
-      								var badsoup = document.getElementById('badsoup');
-     						 		badsoup.innerText = data.badsoup;
-   						 	}
-  						}
-  						xhr.send();
-					</script>
-				</p>
-			</h2>
-			<h1>还有这个：</h1>
-			<video width="640" height="480" controls>
-				<source src="jitang.mp4" type="video/mp4">
-				<object data="jitang.mp4" width="640" height="480">
-					<embed src="jitang.swf" width="640" height="480">
-				</object>
-			</video>
-			<video width="640" height="480" controls>
-				<source src="jiege.mp4" type="video/mp4">
-				<object data="jiege.mp4" width="640" height="480">
-					<embed src="jiege.swf" width="640" height="480">
-				</object>
-			</video>
-			<h1>咳咳，开个玩笑.......</h1>
-		</p>
-		<div class="banner-bg"></div>
-		<style>
-		.banner-bg {
-			width: 100%;
-			padding-top: 100%;
-			background: url("https://7ed.net/bing/api")center center no-repeat;
-			background-size: 100%;
-			filter: blur(0px);
-		}
-		</style>
-	</body>
+<head>
+    <title>刘致远的个人网站</title>
+</head>
+<body>
+    <h1>ChatGPT</h1>
+    <div id="chat-container"></div>
+    <form id="message-form" action="/chat" method="POST">
+        <input type="text" name="message" placeholder="Message">
+        <button type="submit">发送</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#message-form').submit(function(e) {
+                e.preventDefault();
+                var messageInput = $('#message-form input[name=message]');
+                var message = messageInput.val();
+
+                // 向后端发送聊天请求
+                $.ajax({
+                    url: '/chat',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(reply) {
+                        // 将回复添加到聊天容器中
+                        $('#chat-container').append('<p><h2><font color="green"><strong>You:</strong> ' + message + '</font></h2></p>');
+                        $('#chat-container').append('<p><h2><font color="blue"><strong>Chatbot:</strong> ' + reply + '</font></h2></p>');
+                        // 清空输入框            });
+                    }
+                })
+            })
+        });
+    </script>
+</body>
 </html>
